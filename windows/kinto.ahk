@@ -121,6 +121,7 @@ GroupAdd("terminals", "ahk_exe ubuntu2004.exe")
 GroupAdd("terminals", "ahk_exe ConEmu.exe")
 GroupAdd("terminals", "ahk_exe ConEmu64.exe")
 GroupAdd("terminals", "ahk_exe powershell.exe")
+GroupAdd("terminals", "ahk_exe pwsh.exe")
 GroupAdd("terminals", "ahk_exe WindowsTerminal.exe")
 GroupAdd("terminals", "ahk_exe Hyper.exe")
 GroupAdd("terminals", "ahk_exe mintty.exe")
@@ -553,23 +554,6 @@ F2:: Send("{F11}") ;Toggle bookmark
 #HotIf WinActive("ahk_exe opera.exe",)
 ^,:: Send("{Ctrl Down}{F12}{Ctrl Up}")
 #HotIf
-#HotIf
-
-; Sublime Text Remaps for VS Code
-#HotIf WinActive("ahk_group vscode",)
-#p:: Send("{Up}") ; Allow for traversing quick list
-#n:: Send("{Down}") ; Allow for traversing quick list
-; Remap Ctrl+Shift to behave like macOS Sublimetext
-; Will extend cursor to multiple lines
-#+Up:: Send("^!{Up}") ; Default - ST2CODE
-#+Down:: Send("^!{Down}") ; Default - ST2CODE
-; Remap Ctrl+Cmd+G to select all matches
-#^g:: Send("^+{L}") ; Default - ST2CODE
-!+g:: Send("^+{G}") ; View source control
-$#c:: Send("{Ctrl down}c{Ctrl up}") ; Default - Sigints interrupt
-$#x:: Send("{Ctrl down}x{Ctrl up}") ; Default - Sigints interrupt
-
-#Space:: Send("^{Space}") ; Default - Basic code completion
 #HotIf
 
 #HotIf WinActive("ahk_exe sublime_text.exe",)

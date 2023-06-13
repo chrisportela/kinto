@@ -26,17 +26,23 @@ function Invoke-Kinto-Setup {
         [string] $keyboard
     )
     
-    Invoke-WebRequest -Uri https://github.com/rbreaves/kinto/archive/refs/heads/master.zip -OutFile $env:USERPROFILE\Downloads\kinto.zip
-    Expand-Archive -LiteralPath "$env:USERPROFILE\Downloads\kinto.zip" -DestinationPath "$env:USERPROFILE\Downloads" -Force
-    Set-ExecutionPolicy Bypass -Scope Process -Force
-    Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
-    Set-Location "$env:USERPROFILE\Downloads\kinto-master"
+    # Invoke-WebRequest -Uri https://github.com/rbreaves/kinto/archive/refs/heads/master.zip -OutFile $env:USERPROFILE\Downloads\kinto.zip
+    # Expand-Archive -LiteralPath "$env:USERPROFILE\Downloads\kinto.zip" -DestinationPath "$env:USERPROFILE\Downloads" -Force
+    # Set-ExecutionPolicy Bypass -Scope Process -Force
+    # Invoke-WebRequest https://chocolatey.org/install.ps1 -UseBasicParsing | Invoke-Expression
+    Set-Location "$env:USERPROFILE\src\kinto"
     Invoke-Kinto-Dependency-Check
 
-    Copy-Item -Path ".\windows\kinto.bat" -Destination "$env:USERPROFILE\.kinto\" -Confirm
+    Copy-Item -Path ".\windows\kinto.ahk" -Destination "$env:USERPROFILE\.kinto\" -Confirm
     Copy-Item -Path ".\windows\run_kinto.ps1" -Destination "$env:USERPROFILE\.kinto\" -Confirm
-    New-Item -ItemType SymbolicLink -Value "$env:USERPROFILE\src\kinto\windows\run_kinto.ps1" \
-        -Path "$env:USERPROFILE\AppData\Roaming\Microsoft\Windows\STARTM~1\Programs\Startup\run_kinto.ps1"
+
+    # Create setup shortcut to launch kinto
+    $WshShell = New-Object -comObject WScript.Shell
+    $Shortcut = $WshShell.CreateShortcut("$env:USERPROFILE\AppData\Roaming\Microsoft\Windows\STARTM~1\Programs\Startup\run_kinto.ps1")
+    $Shortcut.TargetPath = "C:\Program Files\PowerShell\7\pwsh.exe"
+    $Shortcut.Arguments = "-Command "
+    $Shortcut.StartIn = "$env:USERPROFILE\.kinto\"
+    $Shortcut.Save()
 
     Invoke-Kinto
 }
